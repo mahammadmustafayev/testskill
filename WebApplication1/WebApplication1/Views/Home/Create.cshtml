@@ -1,0 +1,96 @@
+﻿
+@model Skill
+@{
+    ViewData["Title"] = "Create";
+}
+<form  >
+
+    <div class="mb-3" >
+        <label asp-for="Title" class="form-label">Title</label>
+        <input asp-for="Title" id="titleId" class="form-control" >
+    </div>
+    <div class="mb-3" >
+        <label asp-for="Experience" class="form-label">Experience</label>
+        <input asp-for="Experience" id="experienceId" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="SkillName" class="form-label">Skill</label>
+        <input asp-for="SkillName" class="form-control" id="exampleInput">
+        <button id="addSkill" type="button" class="btn btn-secondary mt-3">Add Skill</button>
+    </div>
+    <div class="mb-3" id="skillCollection">
+        <!-- <button onclick="deleteSkill" class="btn btn-warning rounded-5">fgngjwhfqehrh <a href="#" class="btn btn-danger rounded-5">x</a></button> -->
+    </div>
+    <input asp-for="SkillsArray" id="textCollection" class="form-control">
+
+
+    <div class="mb-3" >
+        <button id="addVacancy" type="button" class="btn btn-secondary mt-3">Add Vakansi</button>
+    </div>
+</form>
+
+
+
+<script>
+    const skills = [];
+    const addSkill = document.querySelector('#addSkill'),
+        skillCollection = document.querySelector('#skillCollection'),
+        skillInput = document.querySelector('#exampleInput'),
+        addVacancy = document.querySelector('#addVacancy'),
+        text = document.querySelector('#textCollection');
+
+    addSkill.addEventListener('click', function (e) {
+        e.preventDefault();
+        skillCollection.innerHTML +=
+            `
+               <button  class="btn btn-warning rounded-5">${skillInput.value}<a href="#" onclick="deleteSkill(this)" class="btn btn-danger ms-5 rounded-5">x</a></button>
+               `
+        skills.push(skillInput.value);
+        skillInput.value = '';
+
+         skills.forEach(skill => {0
+              console.log(skill);
+           });
+        
+       
+        text.value = skills.join(' * ');
+    })
+
+    addVacancy.addEventListener('click',function(){
+        const dataPost = JSON.stringify(skills),
+            titleId = document.getElementById('titleId').value,
+            experienceId = document.getElementById('experienceId').value;
+         
+           
+
+
+
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:7104/Home/Create",
+            data: {
+                skills: dataPost, 
+                title: titleId,
+                experience:experienceId
+            },
+            success: function (data) {
+                //alert("good: " + data)
+            },
+            error: function (data) {
+                //console.log(data)
+            }
+
+        });
+    })
+
+    function deleteSkill(event) {
+        skills.pop(event.parentElement.textContent);
+        event.parentElement.remove();
+    };
+
+
+    
+
+</script>
+
+
